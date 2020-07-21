@@ -1,3 +1,5 @@
+GITUP_VERSION="1.0.0"
+
 function gitup {
   # set defaults for all options
   GITUP_MERGE_COMMAND=rebase
@@ -57,11 +59,15 @@ function gitup {
         __gitup_init
         return 0
         ;;
+      -v | --version )
+        __gitup_version
+        return 0
+        ;;
       * )
         echo Unrecognized Option: $1
         echo ""
         __gitup_help
-        return -1
+        return 0
       ;;
     esac
   done
@@ -69,9 +75,13 @@ function gitup {
   __gitup_run $merge_command $branch_name $remote_name $skip_update $skip_migrations
 }
 
+function __gitup_version {
+  echo "gitup v$GITUP_VERSION"
+}
+
 function __gitup_help {
-  echo "Gitup Help"
-  echo "----------"
+  echo "gitup v$GITUP_VERSION"
+  echo "---------------------"
   echo "A shell script to automate the git update dance with a Rails project."
   echo " "
   echo "The steps include:"
@@ -99,7 +109,7 @@ function __gitup_help {
 }
 
 function __gitup_init {
-  echo "Gitup initialization"
+  echo "gitup Initialization"
   echo "--------------------"
   local rc_file_source="$(dirname ${BASH_SOURCE[0]})/.gituprc"
   local rc_file_dest="$PWD/.gituprc"
