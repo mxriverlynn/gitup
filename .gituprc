@@ -1,0 +1,66 @@
+# Gitup: Git Update Dance Configuration
+# -------------------------------------
+# configuration for gitup can be set as a default for the current user
+# by adding a ~/.gituprc file with settings
+# 
+# current project or local directory settings can be added in ./.gituprc
+# 
+# the .gituprc file is a valid shell script, loaded every time gitup is
+# run. this means you can add logic, functions, and other calls to the
+# .gituprc file and it will be executed at runtime
+
+# MERGE COMMAND
+# -------------
+# How to update the local git branch, from the upstream branch
+#
+# Options:
+#   merge: force a merge of the upstream branch
+#   rebase: (default) force a rebase of the upstream branch
+#
+# Example: How to change merge command for specific branches
+# 
+#   # current git branch
+#   local branch_name=$(git symbolic-ref -q HEAD)
+#   branch_name=${branch_name##refs/heads/}
+#   # merge if we're in 'development' branch
+#   if [[ $branch_name == development ]]; then
+#     GITUP_MERGE_COMMAND=merge
+#   else
+#     GITUP_MERGE_COMMAND=rebase
+#   fi
+
+GITUP_MERGE_COMMAND=rebase
+
+# BRANCH NAME
+# -----------
+# The remote branch name to pull from the git remote
+#
+# Default: development
+GITUP_BRANCH_NAME=development
+
+# REMOTE NAME
+# -----------
+# The git remote name to pull from
+#
+# Default: origin
+GITUP_REMOTE_NAME=origin
+
+# SKIP UPDATE
+# -----------
+# Whether or not a git update is performed prior to running
+# the bundle install or db:migrate steps
+#
+# Options:
+#   0: (default) do not skip the update
+#   1: skip the update
+GITUP_SKIP_UPDATE=0
+
+# SKIP_MIGRATIONS
+# ---------------
+# Whether or not to skip the db:migration steps after the git update
+#
+# Options:
+#   0: (default) do not skip the db:migration steps
+#   1: skip the db:migration steps
+GITUP_SKIP_MIGRATIONS=0
+
