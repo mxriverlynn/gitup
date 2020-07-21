@@ -106,6 +106,7 @@ function __gitup_help {
   echo "  -r  --remote <name>        # git remote name. default: origin"
   echo "  -s  --skip-migrations      # git update and bundle install only"
   echo "  -h  --help                 # the help screen you're looking at"
+  echo "  -v  --version              # show the current gitup version number"
 }
 
 function __gitup_init {
