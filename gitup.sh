@@ -42,6 +42,10 @@ function gitup {
         shift
         remote_name=$1
         ;;
+      --reset )
+        merge_command=reset
+        shift
+        ;;
       -c | --continue )
         shift
         skip_update=1
@@ -159,7 +163,12 @@ function __gitup_run_git_update {
 
   echo "GITUP: Updating current branch from [$upstream_branch] with [$merge_command] ..."
   git fetch $remote_name $branch_name
-  git $merge_command $upstream_branch
+
+  if [[ "$remote_name" = "reset" ]]; then
+    git reset $upstream_branch --hard
+  else
+    git $merge_command $upstream_branch
+  fi
 }
 
 function __gitup_run {
