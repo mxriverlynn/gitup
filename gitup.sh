@@ -1,4 +1,4 @@
-GITUP_VERSION="1.0.0"
+GITUP_VERSION="1.1.0"
 
 function gitup {
   # set defaults for all options
@@ -72,7 +72,7 @@ function gitup {
         echo ""
         __gitup_help
         return 0
-      ;;
+        ;;
     esac
   done
 
@@ -84,7 +84,7 @@ function __gitup_version {
 }
 
 function __gitup_help {
-  echo "gitup v$GITUP_VERSION"
+  __gitup_version
   echo "---------------------"
   echo "A shell script to automate the git update dance with a Rails project."
   echo " "
@@ -164,7 +164,7 @@ function __gitup_run_git_update {
   echo "GITUP: Updating current branch from [$upstream_branch] with [$merge_command] ..."
   git fetch $remote_name $branch_name
 
-  if [[ "$remote_name" = "reset" ]]; then
+  if [ "$remote_name" = "reset" ]; then
     git reset $upstream_branch --hard
   else
     git $merge_command $upstream_branch
