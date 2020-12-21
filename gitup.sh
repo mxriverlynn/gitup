@@ -123,7 +123,7 @@ function __gitup_init {
   echo .gituprc configuration now available at $rc_file_dest
 }
 
-function __gitup_run_bundle {
+function __gitup_run_after_update {
   echo "GITUP: Checking gem bundle status ..."
   bundle check
   RESULT=$?
@@ -190,7 +190,7 @@ function __gitup_run {
     echo " "
   fi
 
-  __gitup_run_bundle
+  __gitup_run_after_update
   RESULT=$?; if [ $RESULT != 0 ]; then return 1; fi
 
   if [[ $skip_migrations -eq 0 ]]; then
