@@ -7,6 +7,7 @@ function gitup {
   GITUP_REMOTE_NAME=origin
   GITUP_SKIP_UPDATE=0
   GITUP_SKIP_MIGRATIONS=0
+  GITUP_AFTER_UPDATE_FN='__gitup_run_after_update'
 
   # load user level settings as overrides
   local user_config_file="$(echo ~/.gituprc)"
@@ -190,7 +191,7 @@ function __gitup_run {
     echo " "
   fi
 
-  __gitup_run_after_update
+  $($GITUP_AFTER_UPDATE_FN)
   RESULT=$?; if [ $RESULT != 0 ]; then return 1; fi
 
   if [[ $skip_migrations -eq 0 ]]; then
