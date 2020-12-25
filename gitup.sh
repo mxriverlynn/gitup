@@ -2,9 +2,6 @@
 
 GITUP_VERSION="1.1.0"
 
-GITUP_ROOT_FOLDER=$(cd "$(dirname "$0")"; pwd)
-GITUP_RC_FILE="$GITUP_ROOT_FOLDER/.gituprc"
-
 function gitup {
   # set defaults for all options
   GITUP_MERGE_COMMAND=rebase
@@ -129,20 +126,22 @@ function __gitup_help {
 
 function __gitup_make_executable {
   echo "creating symlink"
-  local gitup_source="$GITUP_ROOT_FOLDER/gitup"
+  local gitup_root_folder=$(dirname $0)
+  local gitup_source="$gitup_root_folder/gitup.sh"
   local gitup_dest_folder="/usr/local/bin"
 
   pushd $PWD >> /dev/null
   cd $gitup_dest_folder
-  ln -sfnv $gitup_source $gitup_dest_folder
+  ln -sfnv $gitup_source "$gitup_dest_folder/gitup"
   popd >> /dev/null
 }
 
 function __gitup_init {
   echo "gitup Initialization"
   echo "--------------------"
+  local gitup_rc_file="$(dirname $(readlink $0))/.gituprc"
   local rc_file_dest="$PWD/.gituprc"
-  cp -fi $GITUP_RC_FILE $rc_file_dest
+  cp -fi $gitup_rc_file $rc_file_dest
   echo ""
   echo .gituprc configuration now available at $rc_file_dest
 }
