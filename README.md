@@ -20,9 +20,12 @@ A shell script to automate the git update dance with a Rails project.
  
 The steps include:
  
+  core git steps:
   1. Check for uncommitted git changes, and exit if found
   2. Fetch branch from remote (default: origin/development)
   3. Update current branch from remote branch (default: rebase)
+
+  default (ruby/rails) steps:
   4. Check bundler for missing ruby gems, and install if needed
   5. Check for and run migrations against 'development' if needed
   6. Check for and run migrations against 'test' if needed
@@ -43,6 +46,31 @@ Command line options:
   -h  --help                 # the help screen you're looking at
   -v  --version              # show the current gitup version number
 ```
+
+## Use with other languages
+
+Gitup can be customized to be used with other languages fairly easily. You only need to write a few functions
+that defined the work to do, and then register these functions.
+
+### Post Git-Update
+
+```bash
+# AFTER-UPDATE STEP
+# -----------------
+# Function to run after gitup has completed the git update process
+#
+# Default:
+#   GITUP_AFTER_UPDATE_FN=__gitup_run_after_update
+
+GITUP_AFTER_UPDATE_VN=install_yarn_packages
+
+function install_yarn_packages {
+  echo Installing yarn packages
+  yarn install
+}
+```
+
+This will 
 
 ## LICENSE
 

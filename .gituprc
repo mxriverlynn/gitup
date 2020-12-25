@@ -64,3 +64,9 @@ GITUP_SKIP_UPDATE=0
 #   1: skip the db:migration steps
 GITUP_SKIP_MIGRATIONS=0
 
+# AFTER-UPDATE STEP
+# -----------------
+# Function to run after gitup has completed the git update process
+#
+# Default:
+#   GITUP_AFTER_UPDATE_FN=__gitup_run_after_update
