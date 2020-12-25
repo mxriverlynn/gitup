@@ -2,7 +2,7 @@
 
 GITUP_VERSION="1.1.0"
 
-GITUP_ROOT_FOLDER=$(cd "$(dirname "$0")/.."; pwd)
+GITUP_ROOT_FOLDER=$(cd "$(dirname "$0")"; pwd)
 GITUP_RC_FILE="$GITUP_ROOT_FOLDER/.gituprc"
 
 function gitup {
@@ -66,14 +66,17 @@ function gitup {
         return 0
         ;;
       --init )
+        shift
         __gitup_init
         return 0
         ;;
       --make-executable )
+        shift
         __gitup_make_executable
         return 0
         ;;
       -v | --version )
+        shift
         __gitup_version
         return 0
         ;;
@@ -127,8 +130,12 @@ function __gitup_help {
 function __gitup_make_executable {
   echo "creating symlink"
   local gitup_source="$GITUP_ROOT_FOLDER/gitup"
-  local gitup_dest="/usr/local/bin/gitup"
-  ln -sfnv $gitup_source $gitup_dest
+  local gitup_dest_folder="/usr/local/bin"
+
+  pushd $PWD >> /dev/null
+  cd $gitup_dest_folder
+  ln -sfnv $gitup_source $gitup_dest_folder
+  popd >> /dev/null
 }
 
 function __gitup_init {
