@@ -9,13 +9,22 @@ An important note:
 Gitup is not a general replacement for your git tools or knowledge. It only automated the git update dance that we do so
 frequently, when we need to update our working branch from the main development branch.
 
-## Features & Use
+## Getting Started
+
+After you clone this repository, you'll want to run the `--make-executable` flag from the script. This will add a symlink
+at `/usr/local/bin/gitup`, pionting to the `gitup.sh` file.
+
+`./gitup.sh --make-executable`
+
+Now you can run `gitup` anywhere on your system!
+
+## Full Features & Use
 
 from `gitup -h`
 
 ```
 gitup v1.1.0
----------------------
+------------
 A shell script to automate the git update dance with a Rails project.
  
 The steps include:
