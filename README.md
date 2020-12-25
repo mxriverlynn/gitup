@@ -59,6 +59,9 @@ Command line options:
 Gitup can be customized to be used with other languages fairly easily. You only need to write a few functions
 that defined the work to do, and then register these functions.
 
+To configure your new function, you'll need to edit the `.gituprc` file for your project. If you don't have
+an rc file yet, you can run `gitup --init` from your project folder to create one.
+
 ### Post Git-Update
 
 ```bash
@@ -69,7 +72,7 @@ that defined the work to do, and then register these functions.
 # Default:
 #   GITUP_AFTER_UPDATE_FN=__gitup_run_after_update
 
-GITUP_AFTER_UPDATE_VN=install_yarn_packages
+GITUP_AFTER_UPDATE_FN=install_yarn_packages
 
 function install_yarn_packages {
   echo Installing yarn packages
