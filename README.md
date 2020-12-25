@@ -20,31 +20,29 @@ Now you can run `gitup` anywhere on your system!
 
 ## Full Features & Use
 
-from `gitup -h`
-
-```
-gitup v1.1.0
-------------
 A shell script to automate the git update dance with a Rails project.
  
-The steps include:
- 
-  core git steps:
+core git steps:
+
   1. Check for uncommitted git changes, and exit if found
   2. Fetch branch from remote (default: origin/development)
   3. Update current branch from remote branch (default: rebase)
 
-  default (ruby/rails) steps:
+default (ruby/rails) steps:
+
   4. Check bundler for missing ruby gems, and install if needed
   5. Check for and run migrations against 'development' if needed
   6. Check for and run migrations against 'test' if needed
  
 Basic use:
  
-  gitup [option [value]]
+```
+gitup [option [value]]
+```
  
 Command line options:
  
+```
   -b  --branch <name>        # set the branch to update from. default: development
   -c  --continue             # continues gitup from after the git fetch / update
       --init                 # copy the default .gituprc to the current directory
