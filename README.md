@@ -14,7 +14,7 @@ frequently, when we need to update our working branch from the main development 
 from `gitup -h`
 
 ```
-gitup v1.0.0
+gitup v1.1.0
 ---------------------
 A shell script to automate the git update dance with a Rails project.
  
@@ -36,6 +36,7 @@ Command line options:
   -b  --branch <name>        # set the branch to update from. default: development
   -c  --continue             # continues gitup from after the git fetch / update
       --init                 # copy the default .gituprc to the current directory
+      --make-executable      # symlink the gitup script to /usr/local/bin
   -m  --merge                # merge instead of rebase
   -r  --remote <name>        # git remote name. default: origin
   -s  --skip-migrations      # git update and bundle install only

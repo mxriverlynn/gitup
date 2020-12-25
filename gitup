@@ -1,4 +1,9 @@
+#! /bin/bash
+
 GITUP_VERSION="1.1.0"
+
+GITUP_ROOT_FOLDER=$(cd "$(dirname "$0")/.."; pwd)
+GITUP_RC_FILE="$GITUP_ROOT_FOLDER/.gituprc"
 
 function gitup {
   # set defaults for all options
@@ -64,6 +69,10 @@ function gitup {
         __gitup_init
         return 0
         ;;
+      --make-executable )
+        __gitup_make_executable
+        return 0
+        ;;
       -v | --version )
         __gitup_version
         return 0
@@ -107,6 +116,7 @@ function __gitup_help {
   echo "  -b  --branch <name>        # set the branch to update from. default: development"
   echo "  -c  --continue             # continues gitup from after the git fetch / update"
   echo "      --init                 # copy the default .gituprc to the current directory"
+  echo "      --make-executable      # symlink the gitup script to /usr/local/bin"
   echo "  -m  --merge                # merge instead of rebase"
   echo "  -r  --remote <name>        # git remote name. default: origin"
   echo "  -s  --skip-migrations      # git update and bundle install only"
@@ -114,12 +124,18 @@ function __gitup_help {
   echo "  -v  --version              # show the current gitup version number"
 }
 
+function __gitup_make_executable {
+  echo "creating symlink"
+  local gitup_source="$GITUP_ROOT_FOLDER/gitup"
+  local gitup_dest="/usr/local/bin/gitup"
+  ln -sfnv $gitup_source $gitup_dest
+}
+
 function __gitup_init {
   echo "gitup Initialization"
   echo "--------------------"
-  local rc_file_source="$(dirname ${BASH_SOURCE[0]})/.gituprc"
   local rc_file_dest="$PWD/.gituprc"
-  cp -fi $rc_file_source $rc_file_dest
+  cp -fi $GITUP_RC_FILE $rc_file_dest
   echo ""
   echo .gituprc configuration now available at $rc_file_dest
 }
@@ -204,3 +220,5 @@ function __gitup_run {
     __gitup_run_test_migrate
   fi
 }
+
+gitup "$@"
