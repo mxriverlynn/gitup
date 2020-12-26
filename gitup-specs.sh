@@ -14,10 +14,12 @@ TEST_BRANCH='test-branch'
 
 testSkipAll() {
   $GITUP -su -sa -sm
+  assertEquals 0 $?
 }
 
 testRunAll() {
-  $GITUP -sa
+  $GITUP
+  assertEquals 0 $?
 }
 
 # SETUP AND TEARDOWN
@@ -77,8 +79,7 @@ setUp() {
 tearDown() {
   cd $LOCAL_REPO
   git reset --hard
-  git checkout $DEV_BRANCH
-  git branch -D $TEST_BRANCH
+  git checkout $TEST_BRANCH
   echo "-------"
   echo
 }
