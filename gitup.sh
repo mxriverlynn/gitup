@@ -10,6 +10,7 @@ function gitup {
   GITUP_SKIP_UPDATE=0
   GITUP_SKIP_MIGRATIONS=0
   GITUP_AFTER_UPDATE_FN=__gitup_run_after_update
+  GITUP_RUN_MIGRATIONS_FN=__gitup_run_migrations
 
   # load user level settings as overrides
   local user_config_file="$(echo ~/.gituprc)"
@@ -27,6 +28,7 @@ function gitup {
   local branch_name=${GITUP_BRANCH_NAME:-'development'}
   local remote_name=${GITUP_REMOTE_NAME:-'origin'}
   local skip_update=${GITUP_SKIP_UPDATE:-0}
+  local skip_after_update=${GITUP_SKIP_AFTER_UPDATE:-0}
   local skip_migrations=${GITUP_SKIP_MIGRATIONS:-0}
 
   echo " "
@@ -53,7 +55,11 @@ function gitup {
         shift
         skip_update=1
         ;;
-      -s | --skip-migrations )
+      -sa | --skip-after-update )
+        shift
+        skip_after_update=1
+        ;;
+      -sm | --skip-migrations )
         shift
         skip_migrations=1
         ;;
@@ -86,7 +92,7 @@ function gitup {
     esac
   done
 
-  __gitup_run $merge_command $branch_name $remote_name $skip_update $skip_migrations
+  __gitup_run $merge_command $branch_name $remote_name $skip_update $skip_after_update $skip_migrations
 }
 
 function __gitup_version {
@@ -114,14 +120,15 @@ function __gitup_help {
   echo "Command line options:"
   echo " "
   echo "  -b  --branch <name>        # set the branch to update from. default: development"
-  echo "  -c  --continue             # continues gitup from after the git fetch / update"
-  echo "      --init                 # copy the default .gituprc to the current directory"
-  echo "      --make-executable      # symlink the gitup script to /usr/local/bin"
-  echo "  -m  --merge                # merge instead of rebase"
-  echo "  -r  --remote <name>        # git remote name. default: origin"
-  echo "  -s  --skip-migrations      # git update and bundle install only"
-  echo "  -h  --help                 # the help screen you're looking at"
-  echo "  -v  --version              # show the current gitup version number"
+  echo "  -c   --continue            # continues gitup from after the git fetch / update"
+  echo "       --init                # copy the default .gituprc to the current directory"
+  echo "       --make-executable     # symlink the gitup script to /usr/local/bin"
+  echo "  -m   --merge               # merge instead of rebase"
+  echo "  -r   --remote <name>       # git remote name. default: origin"
+  echo "  -sa  --skip-after_update   # git update and bundle install only"
+  echo "  -sm  --skip-migrations     # git update and bundle install only"
+  echo "  -h   --help                # the help screen you're looking at"
+  echo "  -v   --version             # show the current gitup version number"
 }
 
 function __gitup_make_executable {
@@ -156,6 +163,32 @@ function __gitup_run_after_update {
   fi
 }
 
+function __gitup_run_git_update {
+  local merge_command=$1
+  local branch_name=$2
+  local remote_name=$3
+  local upstream_branch="$remote_name/$branch_name"
+
+  echo "GITUP: Updating current branch from [$upstream_branch] with [$merge_command] ..."
+  git fetch $remote_name $branch_name
+
+  if [ "$merge_command" = "reset" ]; then
+    git reset $upstream_branch --hard
+  else
+    git $merge_command $upstream_branch
+  fi
+}
+
+function __gitup_run_migrations {
+  echo " "
+
+  __gitup_run_dev_migrate
+  RESULT=$?; if [ $RESULT != 0 ]; then return 1; fi
+  echo " "
+
+  __gitup_run_test_migrate
+}
+
 function __gitup_run_dev_migrate {
   echo "GITUP: Checking development database migration status ..."
   local remaining_migration_count=`bundle exec rake db:migrate:status | awk '{ print $1 }' | grep -c down`
@@ -178,28 +211,13 @@ function __gitup_run_test_migrate {
   fi
 }
 
-function __gitup_run_git_update {
-  local merge_command=$1
-  local branch_name=$2
-  local remote_name=$3
-  local upstream_branch="$remote_name/$branch_name"
-
-  echo "GITUP: Updating current branch from [$upstream_branch] with [$merge_command] ..."
-  git fetch $remote_name $branch_name
-
-  if [ "$merge_command" = "reset" ]; then
-    git reset $upstream_branch --hard
-  else
-    git $merge_command $upstream_branch
-  fi
-}
-
 function __gitup_run {
   local merge_command=$1
   local branch_name=$2
   local remote_name=$3
   local skip_update=$4
-  local skip_migrations=$5
+  local skip_after_update=$5
+  local skip_migrations=$6
 
   if [[ $skip_update -eq 0 ]]; then
     if [[ $(git status --porcelain) ]]; then
@@ -213,17 +231,13 @@ function __gitup_run {
     echo " "
   fi
 
-  $($GITUP_AFTER_UPDATE_FN)
-  RESULT=$?; if [ $RESULT != 0 ]; then return 1; fi
+  if [[ $skip_after_update -eq 0 ]]; then
+    $($GITUP_AFTER_UPDATE_FN)
+    RESULT=$?; if [ $RESULT != 0 ]; then return 1; fi
+  fi
 
   if [[ $skip_migrations -eq 0 ]]; then
-    echo " "
-
-    __gitup_run_dev_migrate
-    RESULT=$?; if [ $RESULT != 0 ]; then return 1; fi
-    echo " "
-
-    __gitup_run_test_migrate
+    $($GITUP_RUN_MIGRATIONS_FN)
   fi
 }
 

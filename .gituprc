@@ -9,64 +9,109 @@
 # run. this means you can add logic, functions, and other calls to the
 # .gituprc file and it will be executed at runtime
 
-# MERGE COMMAND
-# -------------
-# How to update the local git branch, from the upstream branch
-#
-# Options:
-#   merge: force a merge of the upstream branch
-#   rebase: (default) force a rebase of the upstream branch
-#
-# Example: How to change merge command for specific branches
-# 
-#   # current git branch
-#   local branch_name=$(git symbolic-ref -q HEAD)
-#   branch_name=${branch_name##refs/heads/}
-#   # merge if we're in 'development' branch
-#   if [[ $branch_name == development ]]; then
-#     GITUP_MERGE_COMMAND=merge
-#   else
-#     GITUP_MERGE_COMMAND=rebase
-#   fi
 
+
+
+# GIT CONFIGURATION
+# -----------------
+# Manages the git branch update process for your project
+#
+# GITUP_SKIP_UPDATE:
+#   Whether or not a git update is performed prior to running
+#   the bundle install or db:migrate steps
+#
+#   Options:
+#     0: (default) do not skip the update
+#     1: skip the update
+#
+# GITUP_MERGE_COMMAND:
+#   How to update the local git branch, from the upstream branch.
+#
+#   Options:
+#     rebase:  (default) force a rebase of the upstream branch
+#     merge:   force a merge of the upstream branch
+#     <other>: your own command: `git <other> <remote>/<branch>`
+#
+# GITUP_REMOTE_NAME:
+#   The git remote name to pull from
+#
+#   Default:
+#     origin
+#
+# GITUP_BRANCH_NAME:
+#   The main remote branch name to pull, from which your current
+#   branch will be updated
+#
+#   Default:
+#     development
+#
+GITUP_SKIP_UPDATE=0
 GITUP_MERGE_COMMAND=rebase
-
-# BRANCH NAME
-# -----------
-# The remote branch name to pull from the git remote
-#
-# Default: development
 GITUP_BRANCH_NAME=development
-
-# REMOTE NAME
-# -----------
-# The git remote name to pull from
-#
-# Default: origin
 GITUP_REMOTE_NAME=origin
 
-# SKIP UPDATE
-# -----------
-# Whether or not a git update is performed prior to running
-# the bundle install or db:migrate steps
+# ADVANCED GIT CONFIGURATION
+# --------------------------
+# This .gituprs file is a full bash script. You can add logic
+# to determine how to update, based on your current branch, etc.
 #
-# Options:
-#   0: (default) do not skip the update
-#   1: skip the update
-GITUP_SKIP_UPDATE=0
+# Examples:
+#
+#   How to change merge command for specific branches
+#   
+#     # current git branch
+#     local branch_name=$(git symbolic-ref -q HEAD)
+#
+#     # remove the `refs/heads/` structure from the name
+#     branch_name=${branch_name##refs/heads/}
+#
+#     # merge if we're in 'development' branch
+#     if [[ $branch_name == development ]]; then
+#       GITUP_MERGE_COMMAND=merge
+#     else
+#       GITUP_MERGE_COMMAND=rebase
+#     fi
 
-# SKIP_MIGRATIONS
-# ---------------
-# Whether or not to skip the db:migration steps after the git update
+# POST GIT-UPDATE STEP
+# --------------------
+# Manage the step that comes after the git-update process.
+# For example, run `bundle install` (default) and/or other 
+# commands to keep your project's dependencies up to date.
 #
-# Options:
-#   0: (default) do not skip the db:migration steps
-#   1: skip the db:migration steps
+# GITUP_SKIP_AFTER_UPDATE:
+#   Whether or not to skip the step that runs immediately after 
+#   the git-update completes
+#
+#   Options:
+#     0: (default) do not skip the after_update step
+#     1: skip the after_update step
+#
+# GITUP_AFTER_UPDATE_FN:
+#   Function to run after gitup has completed the git update process
+#
+#   Default:
+#     GITUP_AFTER_UPDATE_FN=__gitup_run_after_update
+#
+GITUP_SKIP_AFTER_UPDATE=0
+GITUP_AFTER_UPDATE_FN=__gitup_run_after_update
+
+# RUN MIGRATIONS
+# --------------
+# Manage the process of running schema and/or data migrations,
+# after your project's post-git-update function has run
+#
+# GITUP_SKIP_MIGRATIONS:
+#   Whether or not to skip the db:migration steps after the git update
+#
+#   Options:
+#     0: (default) do not skip the db:migration steps
+#     1: skip the db:migration steps
+#
+# GITUP_RUN_MIGRATIONS_FN:
+#   Function to run migrations. Occurs after git update and post-update steps
+#
+#   Default:
+#     GITUP_RUN_MIGRATIONS_FN=__gitup_run_migrations
+#
 GITUP_SKIP_MIGRATIONS=0
-
-# AFTER-UPDATE STEP
-# -----------------
-# Function to run after gitup has completed the git update process
-#
-# Default:
-#   GITUP_AFTER_UPDATE_FN=__gitup_run_after_update
+GITUP_RUN_MIGRATIONS_FN=__gitup_run_migrations

@@ -80,7 +80,18 @@ function install_yarn_packages {
 }
 ```
 
-This will 
+This example will run `yarn install` after your git branch has updated
+
+### Run Migraitons
+
+```bash
+# RUN MIGRATIONS STEP
+# -------------------
+# Function to run migrations. Occurs after git update and post-update steps
+# Default:
+#   GITUP_RUN_MIGRATIONS_FN=__gitup_run_migrations
+
+```
 
 ## LICENSE
 
