@@ -97,7 +97,7 @@ the full shunit2 included in this repository.
 To run the tests, use the following command from the root of this project repository:
 
 ```bash
-./specs/gitup-specs.sh
+./gitup-specs.sh
 ```
 
 ## LICENSE

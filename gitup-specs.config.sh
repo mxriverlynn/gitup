@@ -1,5 +1,5 @@
-LOCAL_REPO='test-local-repo'
-REMOTE_REPO='test-remote-repo'
+LOCAL_REPO='test-repos/test-local-repo'
+REMOTE_REPO='test-repos/test-remote-repo'
 
 oneTimeSetUp() {
   echo "GITUP SPECS: SETUP"
@@ -9,18 +9,13 @@ oneTimeSetUp() {
 
 oneTimeTearDown() {
   echo "GITUP SPECS: TEARDOWN"
-
-  pushd $PWD >> /dev/null
-    cd specs
-    rm -rdf $REMOTE_REPO
-    rm -rdf $LOCAL_REPO
-  popd >> /dev/null
+  rm -rdf $REMOTE_REPO
+  rm -rdf $LOCAL_REPO
 }
 
 __setup_remote_repo() {
   echo "GITUP SPECS: - create remote repo"
   pushd $PWD >> /dev/null
-    cd specs
     mkdir $REMOTE_REPO
     cd $REMOTE_REPO
     git init .
@@ -32,9 +27,5 @@ __setup_remote_repo() {
 
 __setup_local_repo() {
   echo "GITUP SPECS: - create local repo"
-
-  pushd $PWD >> /dev/null
-    cd specs
-    git clone $REMOTE_REPO $LOCAL_REPO
-  popd >> /dev/null
+  git clone $REMOTE_REPO $LOCAL_REPO
 }
