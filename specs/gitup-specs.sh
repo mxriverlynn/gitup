@@ -4,4 +4,4 @@ testSomething() {
   assertEquals 1 1
 }
 
-. ./shunit2
+. ./specs/shunit2/shunit2

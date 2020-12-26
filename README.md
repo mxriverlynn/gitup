@@ -89,6 +89,17 @@ This example will run `yarn install` after your git branch has updated
 
 ```
 
+## Tests
+
+Gitup uses [shunit2](https://github.com/kward/shunit2/) for tests, and has included
+the full shunit2 included in this repository.
+
+To run the tests, use the following command from the root of this project repository:
+
+```bash
+./specs/gitup-specs.sh
+```
+
 ## LICENSE
 
 MIT License
