@@ -29,13 +29,13 @@ __setup_local_repo() {
   echo "GITUP SPECS: - create local repo"
   git clone $REMOTE_REPO $LOCAL_REPO
 
-  touch sample
+  touch main_sample
   git add .
   git commit -m 'added sample commit'
   git push origin $MAIN_BRANCH
 
   git checkout -b $DEV_BRANCH
-  git touch $DEV_BRANCH
+  touch dev_sample
   git commit -m 'added development commit'
   git push origin $DEV_BRANCH
 }
