@@ -5,7 +5,7 @@ TEST_BRANCH='test-branch'
 
 setUp() {
   pushd $PWD
-  cd $LOCAL_BRANCH
+  cd $LOCAL_REPO
   git checkout -b $TEST_BRANCH origin/$DEV_BRANCH
   echo "RUNNING SPECS"
 }
