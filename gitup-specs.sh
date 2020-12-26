@@ -7,9 +7,11 @@ setUp() {
   pushd $PWD
   cd $LOCAL_BRANCH
   git checkout -b $TEST_BRANCH origin/$DEV_BRANCH
+  echo "RUNNING SPECS"
 }
 
 tearDown() {
+  echo "CLEANUP"
   cd $LOCAL_REPO
   git reset --hard
   git checkout $DEV_BRANCH

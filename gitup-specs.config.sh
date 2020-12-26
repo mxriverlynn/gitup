@@ -33,7 +33,7 @@ __setup_local_repo() {
   pushd $PWD
     cd $LOCAL_REPO
 
-    git checkout $MAIN_BRANCH
+    git checkout -b $MAIN_BRANCH
     touch main_sample
     git add .
     git commit -m 'added sample commit'
