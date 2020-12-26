@@ -227,17 +227,18 @@ function __gitup_run {
     fi
 
     __gitup_run_git_update $merge_command $branch_name $remote_name
-    RESULT=$?; if [ $RESULT != 0 ]; then return 1; fi
+    RESULT=$?; if [ $RESULT != 0 ]; then return $RESULT; fi
     echo " "
   fi
 
   if [[ $skip_after_update -eq 0 ]]; then
     $GITUP_AFTER_UPDATE_FN
-    RESULT=$?; if [ $RESULT != 0 ]; then return 1; fi
+    RESULT=$?; if [ $RESULT != 0 ]; then return $RESULT; fi
   fi
 
   if [[ $skip_migrations -eq 0 ]]; then
     $GITUP_RUN_MIGRATIONS_FN
+    RESULT=$?; if [ $RESULT != 0 ]; then return $RESULT; fi
   fi
 }
 
