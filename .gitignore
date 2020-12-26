@@ -12,7 +12,3 @@
 
 # p4merge
 *.orig
-
-# test repos for specs
-/test-repos/test-local-repo
-/test-repos/test-remote-repo

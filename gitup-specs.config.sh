@@ -1,5 +1,5 @@
-LOCAL_REPO='test-repos/test-local-repo'
-REMOTE_REPO='test-repos/test-remote-repo'
+LOCAL_REPO='/tmp/gitup-test-repos/test-local-repo'
+REMOTE_REPO='/tmp/gitup-test-repos/test-remote-repo'
 
 oneTimeSetUp() {
   echo "GITUP SPECS: SETUP"
