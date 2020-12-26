@@ -67,7 +67,6 @@ __setup_local_repo() {
 }
 
 setUp() {
-  pushd $PWD
   cd $LOCAL_REPO
   git checkout -b $TEST_BRANCH origin/$DEV_BRANCH
   echo
@@ -80,7 +79,6 @@ tearDown() {
   git reset --hard
   git checkout $DEV_BRANCH
   git branch -D $TEST_BRANCH
-  popd
   echo "-------"
   echo
 }
