@@ -15,14 +15,14 @@ oneTimeTearDown() {
 
 __setup_remote_repo() {
   echo "GITUP SPECS: - create remote repo"
-  pushd $PWD >> /dev/null
-    mkdir $REMOTE_REPO
+  pushd $PWD
+    mkdir -p $REMOTE_REPO
     cd $REMOTE_REPO
     git init .
     touch sample
     git add .
     git commit -m 'added sample commit'
-  popd >> /dev/null
+  popd
 }
 
 __setup_local_repo() {
