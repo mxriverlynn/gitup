@@ -14,7 +14,9 @@ frequently, when we need to update our working branch from the main development 
 After you clone this repository, you'll want to run the `--make-executable` flag from the script. This will add a symlink
 at `/usr/local/bin/gitup`, pionting to the `gitup.sh` file.
 
-`./gitup.sh --make-executable`
+```bash
+./gitup.sh --make-executable
+```
 
 Now you can run `gitup` anywhere on your system!
 
@@ -36,22 +38,16 @@ default (ruby/rails) steps:
  
 Basic use:
  
-```
+```bash
 gitup [option [value]]
 ```
+
+Run `gitup` by itself to perform the complete list of steps, as outlined above.
  
-Command line options:
+For a list of all command line options, run:
  
-```
-  -b  --branch <name>        # set the branch to update from. default: development
-  -c  --continue             # continues gitup from after the git fetch / update
-      --init                 # copy the default .gituprc to the current directory
-      --make-executable      # symlink the gitup script to /usr/local/bin
-  -m  --merge                # merge instead of rebase
-  -r  --remote <name>        # git remote name. default: origin
-  -s  --skip-migrations      # git update and bundle install only
-  -h  --help                 # the help screen you're looking at
-  -v  --version              # show the current gitup version number
+```bash
+gitup --help
 ```
 
 ## Use with other languages
