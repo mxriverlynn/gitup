@@ -51,10 +51,6 @@ function gitup {
         merge_command=reset
         shift
         ;;
-      -c | --continue )
-        shift
-        skip_update=1
-        ;;
       -sa | --skip-after-update )
         shift
         skip_after_update=1
@@ -62,6 +58,10 @@ function gitup {
       -sm | --skip-migrations )
         shift
         skip_migrations=1
+        ;;
+      -su | --skip-update )
+        shift
+        skip_update=1
         ;;
       -h | --help )
         shift
@@ -97,11 +97,11 @@ function gitup {
 
 function __gitup_version {
   echo "gitup v$GITUP_VERSION"
+  echo "------------"
 }
 
 function __gitup_help {
   __gitup_version
-  echo "---------------------"
   echo "A shell script to automate the git update dance with a Rails project."
   echo " "
   echo "The steps include:"
@@ -120,13 +120,13 @@ function __gitup_help {
   echo "Command line options:"
   echo " "
   echo "  -b  --branch <name>        # set the branch to update from. default: development"
-  echo "  -c   --continue            # continues gitup from after the git fetch / update"
   echo "       --init                # copy the default .gituprc to the current directory"
   echo "       --make-executable     # symlink the gitup script to /usr/local/bin"
   echo "  -m   --merge               # merge instead of rebase"
   echo "  -r   --remote <name>       # git remote name. default: origin"
-  echo "  -sa  --skip-after_update   # git update and bundle install only"
-  echo "  -sm  --skip-migrations     # git update and bundle install only"
+  echo "  -sa  --skip-after-update   # skip the step that runs after git updates"
+  echo "  -sm  --skip-migrations     # skip the run migration step"
+  echo "  -su  --skip-update         # skip the git update step"
   echo "  -h   --help                # the help screen you're looking at"
   echo "  -v   --version             # show the current gitup version number"
 }
@@ -232,12 +232,12 @@ function __gitup_run {
   fi
 
   if [[ $skip_after_update -eq 0 ]]; then
-    $($GITUP_AFTER_UPDATE_FN)
+    $GITUP_AFTER_UPDATE_FN
     RESULT=$?; if [ $RESULT != 0 ]; then return 1; fi
   fi
 
   if [[ $skip_migrations -eq 0 ]]; then
-    $($GITUP_RUN_MIGRATIONS_FN)
+    $GITUP_RUN_MIGRATIONS_FN
   fi
 }
 
