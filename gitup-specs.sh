@@ -1,10 +1,8 @@
 #!/bin/sh
 
-# SCRIPT VARS TO USE
-# ------------------
 GITUP=". $PWD/gitup.sh"
-LOCAL_REPO='/tmp/gitup-test-repos/test-local-repo'
 REMOTE_REPO='/tmp/gitup-test-repos/test-remote-repo'
+LOCAL_REPO='/tmp/gitup-test-repos/test-local-repo'
 MAIN_BRANCH='main'
 DEV_BRANCH='development'
 TEST_BRANCH='test-branch'
@@ -13,45 +11,45 @@ TEST_BRANCH='test-branch'
 # -----
 
 testSkipAll() {
-  $GITUP -su -sa -sm
-  assertEquals 0 $?
+  pushd $PWD
+    cd $LOCAL_REPO
+    $GITUP -sa -su -sm
+    assertEquals 0 $?
+  popd
 }
 
-testRunAll() {
-  $GITUP
-  assertEquals 0 $?
+testSkipAfterUpdate() {
+  pushd $PWD
+    cd $LOCAL_REPO
+    $GITUP -sa
+    assertEquals 0 $?
+  popd
 }
 
 # SETUP AND TEARDOWN
 # ------------------
 
 oneTimeSetUp() {
-  echo "GITUP SPECS: SETUP"
   __setup_remote_repo
   __setup_local_repo
 }
 
 oneTimeTearDown() {
-  echo "GITUP SPECS: TEARDOWN"
   rm -rdf $REMOTE_REPO
   rm -rdf $LOCAL_REPO
 }
 
 __setup_remote_repo() {
-  echo "GITUP SPECS: - create remote repo"
   pushd $PWD
     mkdir -p $REMOTE_REPO
     cd $REMOTE_REPO
-
     git init --bare
   popd
 }
 
 __setup_local_repo() {
-  echo "GITUP SPECS: - create local repo"
-  git clone $REMOTE_REPO $LOCAL_REPO
-
   pushd $PWD
+    git clone $REMOTE_REPO $LOCAL_REPO
     cd $LOCAL_REPO
 
     git checkout -b $MAIN_BRANCH
@@ -66,22 +64,6 @@ __setup_local_repo() {
     git commit -m 'added development commit'
     git push origin $DEV_BRANCH
   popd
-}
-
-setUp() {
-  cd $LOCAL_REPO
-  git checkout -b $TEST_BRANCH origin/$DEV_BRANCH
-  echo
-  echo "RUNNING SPEC"
-  echo "------------"
-}
-
-tearDown() {
-  cd $LOCAL_REPO
-  git reset --hard
-  git checkout $TEST_BRANCH
-  echo "-------"
-  echo
 }
 
 . ./shunit2/shunit2
