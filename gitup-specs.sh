@@ -30,7 +30,6 @@ test_skip_update_with_cli() {
     cd $LOCAL_REPO
     echo GITUP_AFTER_UPDATE_FN=mock_run_after_update >> $LOCAL_GITUP_RC
     echo GITUP_RUN_MIGRATIONS_FN=mock_run_migrations >> $LOCAL_GITUP_RC
-    cat $LOCAL_GITUP_RC
     $GITUP -su
     assertEquals 0 $?
     assertEquals 1 $mock_run_after_update_called
@@ -41,7 +40,11 @@ test_skip_update_with_cli() {
 test_skip_after_update_with_cli() {
   pushd $PWD
     cd $LOCAL_REPO
+    echo GITUP_AFTER_UPDATE_FN=mock_run_after_update >> $LOCAL_GITUP_RC
+    echo GITUP_RUN_MIGRATIONS_FN=mock_run_migrations >> $LOCAL_GITUP_RC
     $GITUP -sa
+    assertEquals 0 $mock_run_after_update_called
+    assertEquals 1 $mock_run_migrations_called
     assertEquals 0 $?
   popd
 }
