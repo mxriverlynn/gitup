@@ -58,17 +58,17 @@ that defined the work to do, and then register these functions.
 To configure your new function, you'll need to edit the `.gituprc` file for your project. If you don't have
 an rc file yet, you can run `gitup --init` from your project folder to create one.
 
-### Post Git-Update
+### Dependency Installation
 
 ```bash
-# AFTER-UPDATE STEP
-# -----------------
+# INSTALL DEPENDENCIES
+# --------------------
 # Function to run after gitup has completed the git update process
 #
 # Default:
-#   GITUP_AFTER_UPDATE_FN=__gitup_run_after_update
+#   GITUP_INSTALL_DEPENDENCIES_FN=__gitup_install_dependencies
 
-GITUP_AFTER_UPDATE_FN=install_yarn_packages
+GITUP_INSTALL_DEPENDENCIES_FN=install_yarn_packages
 
 function install_yarn_packages {
   echo Installing yarn packages
@@ -85,7 +85,7 @@ This example will run `yarn install` after your git branch has updated
 # -------------------
 # Function to run migrations. Occurs after git update and post-update steps
 # Default:
-#   GITUP_RUN_MIGRATIONS_FN=__gitup_run_migrations
+#   GITUP_RUN_MIGRATIONS_FN=__gitup_migrations
 
 ```
 
