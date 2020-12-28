@@ -15,9 +15,22 @@ TEST_BRANCH='test-branch'
 # SPECS TO SKIP STEPS
 # -------------------
 
+test_run_full_gitup() {
+  pushd $PWD
+    cd $LOCAL_REPO
+
+    $GITUP
+    assertEquals 0 $?
+    assertEquals 1 $mock_git_update_called
+    assertEquals 1 $mock_install_dependencies_called
+    assertEquals 1 $mock_migrations_called
+  popd
+}
+
 test_skip_all_with_cli() {
   pushd $PWD
     cd $LOCAL_REPO
+
     $GITUP -sa -su -sm
     assertEquals 0 $?
   popd
