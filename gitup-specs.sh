@@ -28,9 +28,6 @@ test_skip_update_with_cli() {
 
   pushd $PWD
     cd $LOCAL_REPO
-    echo GITUP_GIT_UPDATE_FN=mock_git_update >> $LOCAL_GITUP_RC
-    echo GITUP_INSTALL_DEPENDENCIES_FN=mock_install_dependencies >> $LOCAL_GITUP_RC
-    echo GITUP_RUN_MIGRATIONS_FN=mock_migrations >> $LOCAL_GITUP_RC
 
     $GITUP -su
 
@@ -44,9 +41,6 @@ test_skip_update_with_cli() {
 test_skip_install_dependencies_with_cli() {
   pushd $PWD
     cd $LOCAL_REPO
-    echo GITUP_GIT_UPDATE_FN=mock_git_update >> $LOCAL_GITUP_RC
-    echo GITUP_INSTALL_DEPENDENCIES_FN=mock_install_dependencies >> $LOCAL_GITUP_RC
-    echo GITUP_RUN_MIGRATIONS_FN=mock_migrations >> $LOCAL_GITUP_RC
 
     $GITUP -sa
 
@@ -60,9 +54,6 @@ test_skip_install_dependencies_with_cli() {
 test_skip_migrations_with_cli() {
   pushd $PWD
     cd $LOCAL_REPO
-    echo GITUP_GIT_UPDATE_FN=mock_git_update >> $LOCAL_GITUP_RC
-    echo GITUP_INSTALL_DEPENDENCIES_FN=mock_install_dependencies >> $LOCAL_GITUP_RC
-    echo GITUP_RUN_MIGRATIONS_FN=mock_migrations >> $LOCAL_GITUP_RC
 
     $GITUP -sm
 
@@ -92,6 +83,10 @@ mock_migrations() {
 # ------------------
 
 setUp() {
+  echo GITUP_GIT_UPDATE_FN=mock_git_update >> $LOCAL_GITUP_RC
+  echo GITUP_INSTALL_DEPENDENCIES_FN=mock_install_dependencies >> $LOCAL_GITUP_RC
+  echo GITUP_RUN_MIGRATIONS_FN=mock_migrations >> $LOCAL_GITUP_RC
+
   mock_git_update_called=0
   mock_install_dependencies_called=0
   mock_migrations_called=0
