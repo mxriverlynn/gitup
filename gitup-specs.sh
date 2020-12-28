@@ -46,7 +46,6 @@ test_skip_update_with_cli() {
     cd $LOCAL_REPO
 
     $GITUP -su
-
     assertEquals 0 $?
     assertEquals 0 $mock_git_update_called
     assertEquals 1 $mock_install_dependencies_called
@@ -59,7 +58,6 @@ test_skip_install_dependencies_with_cli() {
     cd $LOCAL_REPO
 
     $GITUP -sa
-
     assertEquals 0 $?
     assertEquals 1 $mock_git_update_called
     assertEquals 0 $mock_install_dependencies_called
