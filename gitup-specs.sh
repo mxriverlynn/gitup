@@ -33,6 +33,9 @@ test_skip_all_with_cli() {
 
     $GITUP -sa -su -sm
     assertEquals 0 $?
+    assertEquals 0 $mock_git_update_called
+    assertEquals 0 $mock_install_dependencies_called
+    assertEquals 0 $mock_migrations_called
   popd
 }
 
