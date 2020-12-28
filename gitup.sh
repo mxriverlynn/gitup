@@ -9,7 +9,7 @@ function gitup {
   GITUP_REMOTE_NAME=origin
   GITUP_SKIP_UPDATE=0
   GITUP_SKIP_MIGRATIONS=0
-  GITUP_AFTER_UPDATE_FN=__gitup_run_after_update
+  GITUP_INSTALL_DEPENDENCIES_FN=__gitup_run_after_update
   GITUP_RUN_MIGRATIONS_FN=__gitup_run_migrations
 
   # load user level settings as overrides
@@ -28,7 +28,7 @@ function gitup {
   local branch_name=${GITUP_BRANCH_NAME:-'development'}
   local remote_name=${GITUP_REMOTE_NAME:-'origin'}
   local skip_update=${GITUP_SKIP_UPDATE:-0}
-  local skip_after_update=${GITUP_SKIP_AFTER_UPDATE:-0}
+  local skip_install_dependencies=${GITUP_SKIP_INSTALL_DEPENDENCIES:-0}
   local skip_migrations=${GITUP_SKIP_MIGRATIONS:-0}
 
   echo " "
@@ -53,7 +53,7 @@ function gitup {
         ;;
       -sa | --skip-after-update )
         shift
-        skip_after_update=1
+        skip_install_dependencies=1
         ;;
       -sm | --skip-migrations )
         shift
@@ -92,7 +92,7 @@ function gitup {
     esac
   done
 
-  __gitup_run $merge_command $branch_name $remote_name $skip_update $skip_after_update $skip_migrations
+  __gitup_run $merge_command $branch_name $remote_name $skip_update $skip_install_dependencies $skip_migrations
 }
 
 function __gitup_version {
@@ -216,7 +216,7 @@ function __gitup_run {
   local branch_name=$2
   local remote_name=$3
   local skip_update=$4
-  local skip_after_update=$5
+  local skip_install_dependencies=$5
   local skip_migrations=$6
 
   if [[ $skip_update -eq 0 ]]; then
@@ -231,8 +231,8 @@ function __gitup_run {
     echo " "
   fi
 
-  if [[ $skip_after_update -eq 0 ]]; then
-    $GITUP_AFTER_UPDATE_FN
+  if [[ $skip_install_dependencies -eq 0 ]]; then
+    $GITUP_INSTALL_DEPENDENCIES_FN
     RESULT=$?; if [ $RESULT != 0 ]; then return $RESULT; fi
   fi
 

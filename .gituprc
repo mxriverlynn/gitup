@@ -72,13 +72,13 @@ GITUP_REMOTE_NAME=origin
 #       GITUP_MERGE_COMMAND=rebase
 #     fi
 
-# POST GIT-UPDATE STEP
-# --------------------
-# Manage the step that comes after the git-update process.
+# DEPENDENCY INSTALLATION
+# -----------------------
+# Manage the step installs dependencies, after updating git.
 # For example, run `bundle install` (default) and/or other 
 # commands to keep your project's dependencies up to date.
 #
-# GITUP_SKIP_AFTER_UPDATE:
+# GITUP_SKIP_INSTALL_DEPENDENCIES:
 #   Whether or not to skip the step that runs immediately after 
 #   the git-update completes
 #
@@ -86,14 +86,14 @@ GITUP_REMOTE_NAME=origin
 #     0: (default) do not skip the after_update step
 #     1: skip the after_update step
 #
-# GITUP_AFTER_UPDATE_FN:
+# GITUP_INSTALL_DEPENDENCIES_FN:
 #   Function to run after gitup has completed the git update process
 #
 #   Default:
-#     GITUP_AFTER_UPDATE_FN=__gitup_run_after_update
+#     GITUP_INSTALL_DEPENDENCIES_FN=__gitup_run_after_update
 #
-GITUP_SKIP_AFTER_UPDATE=0
-GITUP_AFTER_UPDATE_FN=__gitup_run_after_update
+GITUP_SKIP_INSTALL_DEPENDENCIES=0
+GITUP_INSTALL_DEPENDENCIES_FN=__gitup_run_after_update
 
 # RUN MIGRATIONS
 # --------------

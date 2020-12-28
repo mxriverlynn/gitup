@@ -28,47 +28,53 @@ test_skip_update_with_cli() {
 
   pushd $PWD
     cd $LOCAL_REPO
-    echo GITUP_AFTER_UPDATE_FN=mock_run_after_update >> $LOCAL_GITUP_RC
-    echo GITUP_RUN_MIGRATIONS_FN=mock_run_migrations >> $LOCAL_GITUP_RC
+    echo GITUP_INSTALL_DEPENDENCIES_FN=mock_install_dependencies >> $LOCAL_GITUP_RC
+    echo GITUP_RUN_MIGRATIONS_FN=mock_migrations >> $LOCAL_GITUP_RC
+
     $GITUP -su
+
     assertEquals 0 $?
-    assertEquals 1 $mock_run_after_update_called
-    assertEquals 1 $mock_run_migrations_called
+    assertEquals 1 $mock_install_dependencies_called
+    assertEquals 1 $mock_migrations_called
   popd
 }
 
-test_skip_after_update_with_cli() {
+test_skip_install_dependencies_with_cli() {
   pushd $PWD
     cd $LOCAL_REPO
-    echo GITUP_AFTER_UPDATE_FN=mock_run_after_update >> $LOCAL_GITUP_RC
-    echo GITUP_RUN_MIGRATIONS_FN=mock_run_migrations >> $LOCAL_GITUP_RC
+    echo GITUP_INSTALL_DEPENDENCIES_FN=mock_install_dependencies >> $LOCAL_GITUP_RC
+    echo GITUP_RUN_MIGRATIONS_FN=mock_migrations >> $LOCAL_GITUP_RC
+
     $GITUP -sa
+
     assertEquals 0 $?
-    assertEquals 0 $mock_run_after_update_called
-    assertEquals 1 $mock_run_migrations_called
+    assertEquals 0 $mock_install_dependencies_called
+    assertEquals 1 $mock_migrations_called
   popd
 }
 
 test_skip_migrations_with_cli() {
   pushd $PWD
     cd $LOCAL_REPO
-    echo GITUP_AFTER_UPDATE_FN=mock_run_after_update >> $LOCAL_GITUP_RC
-    echo GITUP_RUN_MIGRATIONS_FN=mock_run_migrations >> $LOCAL_GITUP_RC
+    echo GITUP_INSTALL_DEPENDENCIES_FN=mock_install_dependencies >> $LOCAL_GITUP_RC
+    echo GITUP_RUN_MIGRATIONS_FN=mock_migrations >> $LOCAL_GITUP_RC
+
     $GITUP -sm
+
     assertEquals 0 $?
-    assertEquals 1 $mock_run_after_update_called
-    assertEquals 0 $mock_run_migrations_called
+    assertEquals 1 $mock_install_dependencies_called
+    assertEquals 0 $mock_migrations_called
   popd
 }
 
 # MOCK FUNCTIONS
 # --------------
-mock_run_after_update() {
-  mock_run_after_update_called=1
+mock_install_dependencies() {
+  mock_install_dependencies_called=1
 }
 
-mock_run_migrations() {
-  mock_run_migrations_called=1
+mock_migrations() {
+  mock_migrations_called=1
 }
 
 
@@ -76,8 +82,8 @@ mock_run_migrations() {
 # ------------------
 
 setUp() {
-  mock_run_after_update_called=0
-  mock_run_migrations_called=0
+  mock_install_dependencies_called=0
+  mock_migrations_called=0
 }
 
 tearDown() {
