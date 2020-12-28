@@ -9,8 +9,8 @@ function gitup {
   GITUP_REMOTE_NAME=origin
   GITUP_SKIP_UPDATE=0
   GITUP_SKIP_MIGRATIONS=0
-  GITUP_INSTALL_DEPENDENCIES_FN=__gitup_run_after_update
-  GITUP_RUN_MIGRATIONS_FN=__gitup_run_migrations
+  GITUP_INSTALL_DEPENDENCIES_FN=__gitup_install_dependencies
+  GITUP_RUN_MIGRATIONS_FN=__gitup_migrations
 
   # load user level settings as overrides
   local user_config_file="$(echo ~/.gituprc)"
@@ -153,7 +153,7 @@ function __gitup_init {
   echo .gituprc configuration now available at $rc_file_dest
 }
 
-function __gitup_run_after_update {
+function __gitup_install_dependencies {
   echo "GITUP: Checking gem bundle status ..."
   bundle check
   RESULT=$?
@@ -163,7 +163,7 @@ function __gitup_run_after_update {
   fi
 }
 
-function __gitup_run_git_update {
+function __gitup_git_update {
   local merge_command=$1
   local branch_name=$2
   local remote_name=$3
@@ -179,17 +179,17 @@ function __gitup_run_git_update {
   fi
 }
 
-function __gitup_run_migrations {
+function __gitup_migrations {
   echo " "
 
-  __gitup_run_dev_migrate
+  __gitup_dev_migrate
   RESULT=$?; if [ $RESULT != 0 ]; then return 1; fi
   echo " "
 
-  __gitup_run_test_migrate
+  __gitup_test_migrate
 }
 
-function __gitup_run_dev_migrate {
+function __gitup_dev_migrate {
   echo "GITUP: Checking development database migration status ..."
   local remaining_migration_count=`bundle exec rake db:migrate:status | awk '{ print $1 }' | grep -c down`
   if [[ $remaining_migration_count -eq 0 ]]; then
@@ -200,7 +200,7 @@ function __gitup_run_dev_migrate {
   fi
 }
 
-function __gitup_run_test_migrate {
+function __gitup_test_migrate {
   echo "GITUP: Checking test database migration status ..."
   local remaining_migration_count=`RAILS_ENV=test bundle exec rake db:migrate:status | awk '{ print $1 }' | grep -c down`
   if [[ $remaining_migration_count -eq 0 ]]; then
@@ -226,7 +226,7 @@ function __gitup_run {
       return 1
     fi
 
-    __gitup_run_git_update $merge_command $branch_name $remote_name
+    __gitup_git_update $merge_command $branch_name $remote_name
     RESULT=$?; if [ $RESULT != 0 ]; then return $RESULT; fi
     echo " "
   fi

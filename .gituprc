@@ -90,10 +90,10 @@ GITUP_REMOTE_NAME=origin
 #   Function to run after gitup has completed the git update process
 #
 #   Default:
-#     GITUP_INSTALL_DEPENDENCIES_FN=__gitup_run_after_update
+#     GITUP_INSTALL_DEPENDENCIES_FN=__gitup_install_dependencies
 #
 GITUP_SKIP_INSTALL_DEPENDENCIES=0
-GITUP_INSTALL_DEPENDENCIES_FN=__gitup_run_after_update
+GITUP_INSTALL_DEPENDENCIES_FN=__gitup_install_dependencies
 
 # RUN MIGRATIONS
 # --------------
@@ -111,7 +111,7 @@ GITUP_INSTALL_DEPENDENCIES_FN=__gitup_run_after_update
 #   Function to run migrations. Occurs after git update and post-update steps
 #
 #   Default:
-#     GITUP_RUN_MIGRATIONS_FN=__gitup_run_migrations
+#     GITUP_RUN_MIGRATIONS_FN=__gitup_migrations
 #
 GITUP_SKIP_MIGRATIONS=0
-GITUP_RUN_MIGRATIONS_FN=__gitup_run_migrations
+GITUP_RUN_MIGRATIONS_FN=__gitup_migrations
