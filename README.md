@@ -50,13 +50,29 @@ For a list of all command line options, run:
 gitup --help
 ```
 
-## Use with other languages
+## Advanced Configuration
 
 Gitup can be customized to be used with other languages fairly easily. You only need to write a few functions
 that defined the work to do, and then register these functions.
 
 To configure your new function, you'll need to edit the `.gituprc` file for your project. If you don't have
 an rc file yet, you can run `gitup --init` from your project folder to create one.
+
+### Handling Git Updates
+
+```bash
+# GITUP_GIT_UPDATE_FN:
+#   The method called to update your git branch. Responsible
+#   for handling git pull, git merge or rebase, etc.
+#
+#   Params:
+#     $1: Merge Command
+#     $2: Branch Name 
+#     $3: Remote Name
+#
+#   Default:
+#     GITUP_GIT_UPDATE_FN=__gitup_git_update
+```
 
 ### Dependency Installation
 

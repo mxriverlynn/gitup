@@ -10,8 +10,6 @@
 # .gituprc file and it will be executed at runtime
 
 
-
-
 # GIT CONFIGURATION
 # -----------------
 # Manages the git branch update process for your project
@@ -45,10 +43,23 @@
 #   Default:
 #     development
 #
+# GITUP_GIT_UPDATE_FN:
+#   The method called to update your git branch. Responsible
+#   for handling git pull, git merge or rebase, etc.
+#
+#   Params:
+#     $1: Merge Command
+#     $2: Remote Name
+#     $3: Branch Name 
+#
+#   Default:
+#     GITUP_GIT_UPDATE_FN=__gitup_git_update
+#
 GITUP_SKIP_UPDATE=0
 GITUP_MERGE_COMMAND=rebase
-GITUP_BRANCH_NAME=development
 GITUP_REMOTE_NAME=origin
+GITUP_BRANCH_NAME=development
+GITUP_GIT_UPDATE_FN=__gitup_git_update
 
 # ADVANCED GIT CONFIGURATION
 # --------------------------

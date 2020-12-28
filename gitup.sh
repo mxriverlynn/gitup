@@ -11,6 +11,7 @@ function gitup {
   GITUP_SKIP_MIGRATIONS=0
   GITUP_INSTALL_DEPENDENCIES_FN=__gitup_install_dependencies
   GITUP_RUN_MIGRATIONS_FN=__gitup_migrations
+  GITUP_GIT_UPDATE_FN=__gitup_git_update
 
   # load user level settings as overrides
   local user_config_file="$(echo ~/.gituprc)"
@@ -165,8 +166,8 @@ function __gitup_install_dependencies {
 
 function __gitup_git_update {
   local merge_command=$1
-  local branch_name=$2
-  local remote_name=$3
+  local remote_name=$2
+  local branch_name=$3
   local upstream_branch="$remote_name/$branch_name"
 
   echo "GITUP: Updating current branch from [$upstream_branch] with [$merge_command] ..."
@@ -226,7 +227,7 @@ function __gitup_run {
       return 1
     fi
 
-    __gitup_git_update $merge_command $branch_name $remote_name
+    $GITUP_GIT_UPDATE_FN $merge_command $remote_name $branch_name
     RESULT=$?; if [ $RESULT != 0 ]; then return $RESULT; fi
     echo " "
   fi
