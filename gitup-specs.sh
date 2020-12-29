@@ -14,7 +14,7 @@ TEST_BRANCH='test-branch'
 # SPECS TO SKIP STEPS
 # -------------------
 
-test_run_full_gitup() {(
+test_run_full_gitup() (
   cd $LOCAL_REPO
 
   $GITUP
@@ -22,9 +22,9 @@ test_run_full_gitup() {(
   assertEquals 1 $mock_git_update_called
   assertEquals 1 $mock_install_dependencies_called
   assertEquals 1 $mock_migrations_called
-)}
+)
 
-test_skip_all_with_cli() {(
+test_skip_all_with_cli() (
   cd $LOCAL_REPO
 
   $GITUP -sa -su -sm
@@ -32,9 +32,9 @@ test_skip_all_with_cli() {(
   assertEquals 0 $mock_git_update_called
   assertEquals 0 $mock_install_dependencies_called
   assertEquals 0 $mock_migrations_called
-)}
+)
 
-test_skip_update_with_cli() {(
+test_skip_update_with_cli() (
   cd $LOCAL_REPO
 
   $GITUP -su
@@ -42,9 +42,9 @@ test_skip_update_with_cli() {(
   assertEquals 0 $mock_git_update_called
   assertEquals 1 $mock_install_dependencies_called
   assertEquals 1 $mock_migrations_called
-)}
+)
 
-test_skip_install_dependencies_with_cli() {(
+test_skip_install_dependencies_with_cli() (
   cd $LOCAL_REPO
 
   $GITUP -sa
@@ -52,9 +52,9 @@ test_skip_install_dependencies_with_cli() {(
   assertEquals 1 $mock_git_update_called
   assertEquals 0 $mock_install_dependencies_called
   assertEquals 1 $mock_migrations_called
-)}
+)
 
-test_skip_migrations_with_cli() {(
+test_skip_migrations_with_cli() (
   cd $LOCAL_REPO
 
   $GITUP -sm
@@ -63,7 +63,7 @@ test_skip_migrations_with_cli() {(
   assertEquals 1 $mock_git_update_called
   assertEquals 1 $mock_install_dependencies_called
   assertEquals 0 $mock_migrations_called
-)}
+)
 
 # MOCK FUNCTIONS
 # --------------
@@ -109,13 +109,13 @@ oneTimeTearDown() {
   rm -rdf $LOCAL_REPO
 }
 
-__setup_remote_repo() {(
+__setup_remote_repo() (
   mkdir -p $REMOTE_REPO
   cd $REMOTE_REPO
   git init --bare
-)}
+)
 
-__setup_local_repo() {(
+__setup_local_repo() (
   git clone $REMOTE_REPO $LOCAL_REPO
   cd $LOCAL_REPO
 
@@ -131,6 +131,6 @@ __setup_local_repo() {(
   git add .
   git commit -m 'added development commit'
   git push origin $DEV_BRANCH
-)}
+)
 
 source ./shunit2/shunit2
